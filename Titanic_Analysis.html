@@ -11771,7 +11771,7 @@ Below code enables us to investigate the raw data.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[183]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
@@ -11951,7 +11951,7 @@ None
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[187]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">printmd</span><span class="p">(</span><span class="s2">&quot;Count of each column&quot;</span><span class="p">)</span>
@@ -11971,11 +11971,8 @@ None
 <span class="n">unique_values</span><span class="p">(</span><span class="n">titanic_raw_df</span><span class="p">,</span><span class="s1">&#39;Embarked&#39;</span><span class="p">)</span>
 
 <span class="k">print</span>
-<span class="n">printmd</span><span class="p">(</span><span class="s1">&#39;Common STATS for numeric columns&#39;</span><span class="p">)</span>
+<span class="n">printmd</span><span class="p">(</span><span class="s1">&#39;Common STATS for numeric columns to check the minimum and maximum values&#39;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">titanic_raw_df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
-<span class="k">print</span>
-<span class="n">printmd</span><span class="p">(</span><span class="s1">&#39;Data type of Age column&#39;</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">titanic_raw_df</span><span class="o">.</span><span class="n">Age</span><span class="o">.</span><span class="n">dtype</span>
 </pre></div>
 
 </div>
@@ -12157,7 +12154,7 @@ dtype: int64
 <div class="output_area"><div class="prompt"></div>
 
 <div class="output_markdown rendered_html output_subarea ">
-<p>Common STATS for numeric columns</p>
+<p>Common STATS for numeric columns to check the minimum and maximum values</p>
 
 </div>
 
@@ -12184,23 +12181,6 @@ min      0.000000    0.000000
 50%      0.000000   14.454200  
 75%      0.000000   31.000000  
 max      6.000000  512.329200  
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-
-<div class="output_markdown rendered_html output_subarea ">
-<p>Data type of Age column</p>
-
-</div>
-
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>float64
 </pre>
 </div>
 </div>
@@ -12216,60 +12196,23 @@ max      6.000000  512.329200
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Count of columns above show that Age value is available only for 714 passengers out of 891 so if analysing based on Age it would be best to only use those 714 records for analysis.
 Same applies to other variables that dont have values for all passengers such as Embarked column.</p>
+<p>There are different methods to dealing with missing data. For example one is to estimate based on other records but given the Age value in our case is missing for about 20% of the records I have decided not to do estimation.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[231]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Check rows where the Emarked field is null</span>
-
-<span class="k">print</span> <span class="n">titanic_raw_df</span><span class="p">[</span><span class="n">titanic_raw_df</span><span class="p">[</span><span class="s1">&#39;Embarked&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>     PassengerId  Survived  Pclass                                       Name  \
-61            62         1       1                        Icard, Miss. Amelie   
-829          830         1       1  Stone, Mrs. George Nelson (Martha Evelyn)   
-
-        Sex   Age  SibSp  Parch  Ticket  Fare Cabin Embarked  
-61   female  38.0      0      0  113572  80.0   B28      NaN  
-829  female  62.0      0      0  113572  80.0   B28      NaN  
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[236]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Creating another dataframe with records that have a valid age</span>
 
 <span class="n">titanic_with_age_df</span> <span class="o">=</span> <span class="n">titanic_raw_df</span><span class="p">[</span><span class="n">titanic_raw_df</span><span class="o">.</span><span class="n">Age</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
-<span class="n">printmd</span><span class="p">(</span><span class="s1">&#39;Common STATS for dataset restricted to passengers who have age value&#39;</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">titanic_with_age_df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
-<span class="c1">#age_survival_group = titanic_with_age_df.groupby(&#39;Survived&#39;, as_index=False)</span>
 
-
-<span class="c1">#titanic_with_age_df[&#39;Age_Class&#39;] = titanic_with_age_df[&#39;Age&#39;]</span>
 <span class="n">titanic_with_age_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;Age_Class&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">titanic_with_age_df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span>
+
+<span class="c1"># Function that classifies the age value into a category of 0-10, 11-20 and so on.</span>
 <span class="k">def</span> <span class="nf">age_class</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;0-10&#39;</span>
@@ -12315,36 +12258,8 @@ Same applies to other variables that dont have values for all passengers such as
 
 
 <div class="output_area"><div class="prompt"></div>
-
-<div class="output_markdown rendered_html output_subarea ">
-<p>Common STATS for dataset restricted to passengers who have age value</p>
-
-</div>
-
-</div>
-
-<div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>       PassengerId    Survived      Pclass         Age       SibSp  \
-count   714.000000  714.000000  714.000000  714.000000  714.000000   
-mean    448.582633    0.406162    2.236695   29.699118    0.512605   
-std     259.119524    0.491460    0.838250   14.526497    0.929783   
-min       1.000000    0.000000    1.000000    0.420000    0.000000   
-25%     222.250000    0.000000    1.000000   20.125000    0.000000   
-50%     445.000000    0.000000    2.000000   28.000000    0.000000   
-75%     677.750000    1.000000    3.000000   38.000000    1.000000   
-max     891.000000    1.000000    3.000000   80.000000    5.000000   
-
-            Parch        Fare  
-count  714.000000  714.000000  
-mean     0.431373   34.694514  
-std      0.853289   52.918930  
-min      0.000000    0.000000  
-25%      0.000000    8.050000  
-50%      0.000000   15.741700  
-75%      1.000000   33.375000  
-max      6.000000  512.329200  
-
+<pre>
 </pre>
 </div>
 </div>
@@ -12410,11 +12325,11 @@ Name: Age_Class, dtype: int64
 </div>
 </div>
 
-<div class="output_area"><div class="prompt output_prompt">Out[236]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[18]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.text.Text at 0x145ba1d0&gt;</pre>
+<pre>&lt;matplotlib.text.Text at 0xb778cf8&gt;</pre>
 </div>
 
 </div>
@@ -13015,19 +12930,25 @@ ZOqrsT8AAAAASUVORK5CYII=
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Finding">Finding<a class="anchor-link" href="#Finding">&#182;</a></h1><p>The pie chart shows us percentage of passengers in each age group. It looks like maximum of passengers where aged 21 to 30 and least number of passengers where from the 71 to 80 age class.</p>
+<p>Now lets see Age vs Survival</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[239]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># prepare data for Age vs survival graph</span>
 <span class="n">dead</span> <span class="o">=</span> <span class="n">titanic_with_age_df</span><span class="p">[</span><span class="n">titanic_with_age_df</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">alive</span> <span class="o">=</span> <span class="n">titanic_with_age_df</span><span class="p">[</span><span class="n">titanic_with_age_df</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-
-<span class="n">printmd</span><span class="p">(</span><span class="s1">&#39;STATS from dead and alive dataframe created above&#39;</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">dead</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="k">print</span>
-<span class="k">print</span> <span class="n">alive</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 
 <span class="c1"># Graph parameters for Age vs Survival</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">1600</span><span class="p">)</span>
@@ -13047,31 +12968,6 @@ ZOqrsT8AAAAASUVORK5CYII=
 <div class="output_wrapper">
 <div class="output">
 
-
-<div class="output_area"><div class="prompt"></div>
-
-<div class="output_markdown rendered_html output_subarea ">
-<p>STATS from dead and alive dataframe created above</p>
-
-</div>
-
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>14.1721098771
-
-PassengerId    250.845515
-Survived         0.000000
-Pclass           0.836617
-Age             14.950952
-SibSp            0.731132
-Parch            0.807147
-Fare            70.458776
-dtype: float64
-</pre>
-</div>
-</div>
 
 <div class="output_area"><div class="prompt"></div>
 
@@ -13307,219 +13203,26 @@ yblUmVrHaaYAAAAASUVORK5CYII=
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[214]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Group passengers by survived and sex columns</span>
-<span class="n">sex_group</span> <span class="o">=</span> <span class="n">titanic_raw_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span><span class="s1">&#39;Sex&#39;</span><span class="p">])</span>
-<span class="n">printmd</span><span class="p">(</span><span class="s1">&#39;Count of passengers grouped by Survival and Sex&#39;</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">sex_group</span><span class="p">[</span><span class="s1">&#39;PassengerId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-<span class="k">print</span>
-
-<span class="c1"># Create stacked bar graph showing survival vs sex</span>
-<span class="n">sex_group</span><span class="p">[</span><span class="s1">&#39;PassengerId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">stacked</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sex vs Survival&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Survival&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;# of people&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-
-<div class="output_markdown rendered_html output_subarea ">
-<p>Count of passengers grouped by Survival and Sex</p>
-
-</div>
-
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Survived  Sex   
-0         female     81
-          male      468
-1         female    233
-          male      109
-Name: PassengerId, dtype: int64
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-"
->
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Finding">Finding<a class="anchor-link" href="#Finding">&#182;</a></h1><p>Above graph shows that more females survived compared to men.</p>
-<p>What is even more interesting in this analysis is that ~ only 34% of total passengers were Females.</p>
-<p>Approx 74% of the female passengers survived while approx 18.8% of the male passengers survived.</p>
+<h1 id="Finding">Finding<a class="anchor-link" href="#Finding">&#182;</a></h1><p>Looks like the survival rate is higher in passengers under the age of 10 and those who were aged around 50.
+No one seems to have survived of those aged around 70 and everyone in age group of 80 has survived.</p>
+<p>Now lets do the Age vs Survival using the Age Class to get better visualization.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[217]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">1600</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Graph parameters for Age_class vs Surival</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">1600</span><span class="p">)</span>
+<span class="n">printmd</span><span class="p">(</span><span class="s1">&#39;Counts using Age_class for passengers who died&#39;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">dead</span><span class="o">.</span><span class="n">Age_Class</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
 <span class="n">dead</span><span class="o">.</span><span class="n">Age_Class</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Dead&#39;</span><span class="p">)</span>
 <span class="n">alive</span><span class="o">.</span><span class="n">Age_Class</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Alive&#39;</span><span class="p">)</span>
@@ -13538,6 +13241,15 @@ QJAkAQaCJKlkIEiSAANBklQyECRJgIEgSSoZCJIkAP4HJy0Sbq7MrOsAAAAASUVORK5CYII=
 
 
 <div class="output_area"><div class="prompt"></div>
+
+<div class="output_markdown rendered_html output_subarea ">
+<p>Counts using Age_class for passengers who died</p>
+
+</div>
+
+</div>
+
+<div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>0-10      26
 11-20     71
@@ -13552,11 +13264,11 @@ Name: Age_Class, dtype: int64
 </div>
 </div>
 
-<div class="output_area"><div class="prompt output_prompt">Out[217]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[22]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.text.Text at 0x1a215048&gt;</pre>
+<pre>&lt;matplotlib.text.Text at 0xb7f7ba8&gt;</pre>
 </div>
 
 </div>
@@ -14191,7 +13903,262 @@ aDqQ6v7dAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[230]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Group passengers by survived and sex columns</span>
+<span class="n">sex_group</span> <span class="o">=</span> <span class="n">titanic_raw_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span><span class="s1">&#39;Sex&#39;</span><span class="p">])</span>
+<span class="n">printmd</span><span class="p">(</span><span class="s1">&#39;Count of passengers grouped by Survival and Sex&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sex_group</span><span class="p">[</span><span class="s1">&#39;PassengerId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="k">print</span>
+
+<span class="c1"># Create stacked bar graph showing survival vs sex</span>
+<span class="n">sex_group</span><span class="p">[</span><span class="s1">&#39;PassengerId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">stacked</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sex vs Survival&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Survival&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;# of people&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+<div class="output_markdown rendered_html output_subarea ">
+<p>Count of passengers grouped by Survival and Sex</p>
+
+</div>
+
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Survived  Sex   
+0         female     81
+          male      468
+1         female    233
+          male      109
+Name: PassengerId, dtype: int64
+
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfMAAAFpCAYAAACI8sFuAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+AAALEgAACxIB0t1+/AAAIABJREFUeJzt3X1AVHXC9vFrYESFAdEin61VEEStdHMDu3F1zTY1KsNM
+MWTFXrzXMH1WxUwsFLUSlZTerDWtLbESS9249153NzVf0kzzJStXVyUytRCFkhlAGJjnj56mWNMx
+cxh+8P38NXPOmTPXYKdrzplzzs/icrlcAgAAxvLzdQAAAPDzUOYAABiOMgcAwHCUOQAAhqPMAQAw
+HGUOAIDhKHOggdmzZ49GjhypQYMG6Y477tDo0aN16NAhX8eSJDmdTmVnZyshIUGDBg3SoEGDtGjR
+okv6HoMHD5bdbr+o16akpOif//znJc0DmMDq6wAAvldVVaXU1FS98sor6tKliyQpPz9fo0eP1rp1
+62SxWHya79VXX9XRo0f19ttvy2KxyG63a+TIkWrTpo0SExMvyXusXr36kqwHaErYMwcakMrKStnt
+9jp7pgkJCZo2bZpqamokSe+++66GDRumu+66S8nJyfroo48kSVOnTtWECRMkSQcPHtRvfvMbHT58
+uM76c3Jy9Nhjj7mfb9q0SXfffbdqa2uVmZmphIQEDRkyRBMmTFBFRcVZ+YqLi+V0OlVZWSlJstls
+ys7O1q9//WtJZ+8Z//B5165dNWHCBN16661asmSJUlNT3csdPnxYffr0UW1trbp06aKvv/5aSUlJ
+ddY1f/58zZ8/XxUVFZoyZYqSkpIUHx+vIUOGqLCw8Kf/sYFGhDIHGpCQkBA99NBD+u///m/1799f
+Dz/8sFauXKmePXvKarXq888/14IFC7R48WKtWrVKs2bN0tixY1VZWanp06frwIED+stf/qK0tDRl
+ZGQoKiqqzvqHDh2qNWvWyOl0Svp2L3jYsGHatWuXduzYofz8fK1cuVLt2rXTgQMHzsp333336auv
+vlLPnj2VkpKinJwcVVVVqWPHjh4/m9Pp1M0336w1a9Zo+PDh2rVrl06dOuXOMXToUPn5+bmPPgwb
+NkyrVq2SJNXW1io/P1+JiYnatGmTQkJCtHz5cv39739X165dtWzZsp/1dwdMx2F2oIG59957NWzY
+MO3YsUM7duzQ4sWLtWTJEr355pvasmWLTp48qXvvvVff3Yn5u5Lv3LmzFixYoMTERN1555267bbb
+zlp3u3bt1KVLF61fv15xcXHatm2bZs+eLafTKX9/fyUmJqp3797q37+/fvWrX531+rZt22rlypU6
+fPiwPvjgA23btk1JSUlKT0/X8OHDPX62mJgYSVJQUJBuueUW5efn65577lF+fr6WL18uSe7Pdeut
+t2revHk6deqUPvnkE4WHh6t9+/Zq37692rVrp2XLlunzzz/X9u3b3UcGgKaKMgcakF27dmn37t0a
+NWqUbrzxRt14441KS0vTwIEDtXXrVtXW1qpnz55asGCB+zVfffWV2rZtK0kqKChQ69attW/fPjmd
+TlmtZ2/iQ4cO1erVq1VcXKz+/furZcuWkqS3335bu3bt0rZt2zRx4kSNHDlS99xzT53XZmdnKzEx
+UVFRUYqKilJycrLy8/O1ePFiDR8+XBaLRT8c7qG6urrO6wMDA+vkmDZtmiIjIxUdHa0rr7yyzrIt
+W7ZUfHy8/ud//ke7d+/WsGHDJEmvv/663nzzTY0YMUJ33HGHWrVqpWPHjl3MnxtoNDjMDjQgbdq0
+0Z/+9Cft2rXLPa2oqEiVlZXq1KmT4uLitGXLFhUUFEiSNm7cqEGDBunMmTM6evSoZs+erT//+c+K
+jIxUdnb2j75Hv3799Omnn+qtt95yn7S2YcMG3XPPPfr1r3+tcePG6c4779T+/fvPem1JSYmeeeYZ
+92/mLpdLn332mbp27erO/8knn0iSjhw58qOH6r9z3XXXyeVyaeHChec8eS4xMVGrVq3Snj17NGDA
+AEnSli1bdNddd2nIkCGKiIjQu+++q9ra2vP+XYHGjj1zoAGJiIjQwoULtWDBAhUVFal58+ay2Wx6
+7LHHFBERIUmaNWuW0tLSJEn+/v564YUX1KxZMz300EP6wx/+oI4dO2r69OlKSEjQb37zG9144411
+3iMgIEC33Xabtm3bpm7dukmS+vTpo82bN2vgwIEKDAxUaGhonRPlvjNjxgwtWLBACQkJat68uZxO
+p+Li4jRt2jRJ0pgxY5Senq4NGzYoMjJSN9xwg/u1P3Ym/rBhw/TCCy+oX79+P7rctddeK6vVqltu
+uUUBAQGSpPvvv1/Tp0/XqlWr5Ofnp2uvvVb//ve/z/keQFNgYQhUAADM5vU98xdffFHr169XdXW1
+kpOT1aNHD6Wnp8vPz0/R0dHKzMyUJK1YsUJ5eXlq1qyZUlNT1bdvX29HAwCgUfDqb+bbt2/X7t27
+tXz5cuXm5urLL79UVlaW0tLStGzZMtXW1mrt2rU6efKkcnNzlZeXpyVLlmj+/PlnnTgDAAB+nFfL
+/L333lOnTp304IMPasyYMerbt6/27dun2NhYSd/+Trd161bt3btXMTExslqtstlsioiIOO+JMwAA
+4HtePcxeWlqq48ePa9GiRfriiy80ZsyYOmedBgUFyW63y+FwKDg42D09MDBQZWVl512301kjq9Xf
+a9kBADCFV8s8NDRUUVFRslqt6tChg5o3b66ioiL3fIfDoZCQENlstjq3r/xu+vmUlpZ7LTe8Lyws
+WMXF5//CBuDSY9szV1hY8DnnefUwe0xMjDZv3izp22tlKyoqFBcXp+3bt0v69r7QMTEx6tatm3bu
+3KmqqiqVlZWpoKBA0dHR3owGAECj4dU98759++rDDz/U0KFD5XK5NGPGDF111VXKyMhQdXW1oqKi
+FB8fL4vFopSUFCUnJ8vlciktLc19TSkAADg/Y68z5zCR2TjUB/gG2565fHaYHQAAeB9lDgCA4Shz
+AAAMR5kDAGA4yhwAAMMxBCoAoEn55JOP9eKLC3X69GnV1taobdv/owcfHK8OHSJ9He2iUeYAgCaj
+urpa6ekTlZPzvKKjO0mS/vnPNZo8ebzefDNfFovFxwkvDmUOAGgyKisrZbfbVV7+/S3BBwy4VUFB
+NtXU1Gjbtq1auvRlOZ1OtWjRQmPHTtC113bV7NkzVVlZqVmzslRQcFjjx4/Rc8+9qPDwCN99mB+g
+zAEATUZwcLAefPCPmjRpnC677HJ17forXX99rPr1G6CvvvpSixc/r2effVEhISH67LMCTZjwoFas
++IvS0qZo1KgRWrPmr3rjjVxNmPBQgylyiTvAwUe4CxXgG2x736qoqNCePTu1Z89uvffeRrlcLg0e
+nKhXX12iK65oq++q8ZtvvlF29tOKiuqogwcPaPToexUff7umTMmo98znuwMce+YAgCbj448/0scf
+71Vycop69uytnj1764EHxmrkyLtVXu5QTMwNmjlztnv5EyeKFBZ2hSTp888L1apVqP797wNyOp2y
+WhtOhXJpGgCgyQgNba2lS1/Wxx9/5J5WXHxClZWV6t37Ru3Y8YGOHCmUJL3//nu6995kVVWd0Zdf
+HtczzyxQTs5ChYdH6IUXnvHRJ/hxHGaHT3CoD/ANtj1p9+6deumlRSouPqGAgADZbDbdf/9o9egR
+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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Finding">Finding<a class="anchor-link" href="#Finding">&#182;</a></h1><p>Above graph shows that more females survived compared to men.</p>
+<p>What is even more interesting in this analysis is that ~ only 34% of total passengers were Females.</p>
+<p>Approx 74% of the female passengers survived while approx 18.8% of the male passengers survived.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Count of passengers in each ticket class</span>
@@ -14199,6 +14166,7 @@ aDqQ6v7dAAAAAElFTkSuQmCC
 <span class="k">print</span> <span class="n">titanic_raw_df</span><span class="o">.</span><span class="n">Pclass</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
 <span class="k">print</span>
 <span class="n">class_survival_group</span> <span class="o">=</span> <span class="n">titanic_raw_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span><span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>
+<span class="n">printmd</span><span class="p">(</span><span class="s1">&#39;Count of passengers grouped by class and Survived category&#39;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">class_survival_group</span><span class="p">[</span><span class="s1">&#39;PassengerId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="k">print</span>
 <span class="k">print</span> <span class="n">class_survival_group</span><span class="p">[</span><span class="s1">&#39;PassengerId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
@@ -14235,7 +14203,22 @@ aDqQ6v7dAAAAAElFTkSuQmCC
 3    491
 Name: Pclass, dtype: int64
 
-Survived  Pclass
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+
+<div class="output_markdown rendered_html output_subarea ">
+<p>Count of passengers grouped by class and Survived category</p>
+
+</div>
+
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Survived  Pclass
 0         1          80
           2          97
           3         372
@@ -14402,9 +14385,11 @@ KgIiIhmmIiAikmEqAiIiGaYiICKSYSoCIiIZ9r+4c15iUwxfqgAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Finding">Finding<a class="anchor-link" href="#Finding">&#182;</a></h1><p>One interesting finding from the above graph is that of the first class passengers 62% of them survived while about 47% of the second class passengers survived and only 28% of the third class passengers survived.</p>
-<h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h1><p>Best chances of survival were for first class passengers, females and for kids under 10.</p>
-<p>and Life has always been unfair to the poor.</p>
+<h1 id="Finding">Finding<a class="anchor-link" href="#Finding">&#182;</a></h1><p>One interesting finding from the above graph is that, of the first class passengers 62% of them survived while about 47% of the second class passengers survived and only 28% of the third class passengers survived.</p>
+<h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h1><p>Best chances of survival seem like were for first class passengers, females and for kids under 10.</p>
+<p>And Life has always been unfair to the poor.</p>
+<p><strong>Note:</strong></p>
+<p>The records with missing Age values were removed for the Age vs Survival analysis. So that analysis was only done with 714 records and not on the 891 actual records.</p>
 
 </div>
 </div>
